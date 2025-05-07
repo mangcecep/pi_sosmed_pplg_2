@@ -24,39 +24,6 @@ self.detail = async (req, res) => {
     })
 }
 
-self.save = (req, res) => {
-
-    const error = validationResult(req)
-    if (!error.isEmpty()) {
-        return res.status(422).json(error)
-    }
-
-    try {
-        const {
-            firstName,
-            lastName,
-            classes,
-            gender,
-            major_id
-        } = req.body
-
-        const data = student.create({
-            firstName: firstName,
-            lastName: lastName,
-            classes: classes,
-            gender: gender,
-            major_id: major_id
-        })
-
-        res.status(201).json({
-            message: "student has been created!",
-            data: data
-        })
-    } catch (error) {
-        res.status(500).json(error)
-    }
-}
-
 self.update = async (req, res) => {
     const error = validationResult(req)
     if (!error.isEmpty()) {
