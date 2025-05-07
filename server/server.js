@@ -2,6 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const studentRoute = require('./routes/studentRoute')
+// const authRoute = require('./routes/authRoute')
 
 const app = express()
 const corsOption = {
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
     })
 })
 
-app.use("/student", studentRoute(express))
+app.use("v1/student", studentRoute(express))
+// app.use("v1/auth", authRoute(express))
 
 app.listen(PORT, () => console.log(`Server running at http://${hostName}:${PORT}`))
