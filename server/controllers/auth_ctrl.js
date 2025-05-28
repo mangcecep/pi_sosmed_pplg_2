@@ -7,9 +7,46 @@ const {
     role_user
 } = require("../models")
 const bcrypt = require("bcryptjs")
-const { where } = require("sequelize")
-
+const jwt = require('jsonwebtoken')
 let self = {}
+
+self.login = async (req, res) => {
+    const error = validationResult(req)
+    if (!error.isEmpty()) {
+        return res.status(422).json(error)
+    }
+
+    const options = {
+        expiresIn: '24h'
+    }
+
+    const userData = await user.findOne({
+        where: {
+            username: req.body.username
+        },
+        include: [
+            { model: role },
+            { model: student },
+        ]
+    })
+
+    const secret = "PI_JAYA_JAYA_JAYALAH"
+
+    const token = jwt.sign({
+        data: {
+            id: userData?.id,
+            username: userData?.username,
+            email: userData?.email,
+            roles: userData?.roles[0]?.role_name,
+            student: userData?.roles[0]
+        },
+    }, secret, options)
+
+    res.status(200).json({
+        message: "login Success!",
+        token: token
+    })
+}
 
 self.save = async (req, res) => {
 
